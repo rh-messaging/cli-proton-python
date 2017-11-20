@@ -1,0 +1,10 @@
+__pycache__/
+*.py[cod]
+
+*.swp
+.idea
+docs/_build/*
+docs/api
+
+/*.egg-info
+/dist/
