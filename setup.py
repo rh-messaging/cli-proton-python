@@ -33,8 +33,8 @@ from setuptools import setup, find_packages
 
 
 # Get the long description from the README file
-CWD = path.abspath(path.dirname('README.md'))
-with c_open(path.join(CWD, 'README.md'), encoding='utf-8') as f:
+CWD = path.abspath(path.dirname('README.rst'))
+with c_open(path.join(CWD, 'README.rst'), encoding='utf-8') as f:
     LONG_DESCRIPTION = f.read()
 
 setup(
