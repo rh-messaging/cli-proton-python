@@ -28,7 +28,7 @@ cli-proton-python requires Python_ v2.4+ to run.
 Using
 *****
 
-Using cmd client part
+Using the command line clients (please refer to --help to discover the available options)
 
 ::
 
