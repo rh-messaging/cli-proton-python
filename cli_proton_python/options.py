@@ -178,7 +178,7 @@ class SRCoreOptions(CoreOptions):
         super(SRCoreOptions, self).add_logging_options()
         group = [group for group in self.option_groups if group.title == "Logging Options"][0]
         group.add_option("--log-msgs", type="choice", action="store",
-                         choices=['dict', 'body', 'upstream', 'none', 'interop'],
+                         choices=['dict', 'body', 'upstream', 'none', 'interop', 'json'],
                          help="message[s] reporting style (default %default)")
 
     def add_transaction_options(self):

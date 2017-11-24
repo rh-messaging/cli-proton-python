@@ -113,6 +113,8 @@ def print_message(msg, msg_format):
         print(formatter.Formatter(msg).print_message())
     elif msg_format == 'interop':
         print(formatter.Formatter(msg).print_message_as_interop())
+    elif msg_format == 'json':
+        print(formatter.Formatter(msg).print_message_as_json())
 
 def retype_content(content, content_type):
     """
