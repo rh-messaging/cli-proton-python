@@ -18,6 +18,7 @@
 #
 import os
 import sys
+from sphinx.apidoc import main
 sys.path.insert(0, os.path.abspath('..'))
 
 # -- General configuration ------------------------------------------------
@@ -339,3 +340,14 @@ texinfo_documents = [
 # If true, do not generate a @detailmenu in the "Top" node's menu.
 #
 # texinfo_no_detailmenu = False
+
+# build the api documentation
+
+def run_apidoc(_):
+    ''' install dependencies and generate API documentation '''
+    os.system('pip install python-qpid-proton')
+    main([None, '-e', '-o', "api", "../cli_proton_python", '-f', '-d', '1'])
+
+def setup(app):
+    ''' call the API documentation generator when the builder object has been created '''
+    app.connect('builder-inited', run_apidoc)
