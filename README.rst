@@ -18,7 +18,7 @@ current related projects:
 Installation
 ************
 
-cli-proton-python requires Python_ v2.4+ to run.
+cli-proton-python requires Python_ v2.6+ to run.
 
 ::
 

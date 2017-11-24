@@ -25,6 +25,7 @@ from __future__ import absolute_import
 import sys
 import proton
 import json
+import ast
 
 if sys.version_info > (3,):
     # define long for Python 3.x (int and long were unified)
@@ -265,7 +266,7 @@ class Formatter(object):
         :return: message to be printed in JSON form
         :rtype: str
         """
-        return json.dumps(eval(self.print_message_as_interop()))
+        return json.dumps(ast.literal_eval(self.print_message_as_interop()))
 
     def print_stats(self):
         """
