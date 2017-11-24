@@ -1,1 +1,7 @@
 v1.0.0 -- November 20, 2017
+
+v1.0.1 -- November 24, 2017
+
+* json message output format support added
+* minor documentation and packaging changes
+* API documentation generation
