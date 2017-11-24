@@ -6,12 +6,6 @@ Welcome to cli-proton-python's documentation!
 
 .. include:: ../README.rst
 
-*******
-Version
-*******
-
-.. include:: ../CHANGES.txt
-
 .. toctree::
    :caption: API
    :name: api
@@ -25,4 +19,9 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+Changelog
+=========
+
+.. include:: ../CHANGES.txt
 

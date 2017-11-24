@@ -2,6 +2,12 @@
 CLI-PROTON-PYTHON
 #################
 
+.. image:: https://travis-ci.org/rh-messaging/cli-proton-python.svg?branch=master
+    :target: https://travis-ci.org/rh-messaging/cli-proton-python
+
+.. image:: https://badge.fury.io/py/cli-proton-python.svg
+    :target: https://badge.fury.io/py/cli-proton-python
+
 Proton Python clients is a collection of reactive messaging test clients built on python-qpid-proton_ AMQP1.0 based messaging library. cli-proton-python is a part of Unified Messaging Test Clients that offers equivalent functionality when using different programing languages or APIs.
 
 current related projects:
@@ -10,9 +16,6 @@ current related projects:
 * cli-rhea_
 * cli-netlite_
 * cli-proton-ruby_
-
-.. image:: https://travis-ci.org/rh-messaging/cli-proton-python.svg?branch=master
-    :target: https://travis-ci.org/rh-messaging/cli-proton-python
 
 ************
 Installation
@@ -54,6 +57,16 @@ Using in script
     container = proton.reactor.Container(sender.Send(opts))
     container.run()
 
+*************
+Documentation
+*************
+
+.. image:: https://readthedocs.org/projects/cli-proton-python/badge/?version=latest
+    :target: http://cli-proton-python.readthedocs.io/en/latest/?badge=latest
+    :alt: Documentation Status
+
+Documentation may be found on readthedocs.io: `read the docummentation`_
+
 *******
 License
 *******
@@ -67,4 +80,5 @@ License
 .. _cli-rhea: https://github.com/rh-messaging/cli-rhea
 .. _cli-netlite: https://github.com/rh-messaging/cli-netlite
 .. _cli-proton-ruby: https://github.com/rh-messaging/cli-proton-ruby
+.. _read the docummentation: http://cli-proton-python.readthedocs.io/en/latest/
 
