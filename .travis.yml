@@ -16,7 +16,7 @@ before_install:
             > ${PWD}/artemis-data/override/broker-00.xml
   - cat ${PWD}/artemis-data/override/broker-00.xml
   - docker pull vromero/activemq-artemis
-  - docker run v ${PWD}/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis
+  - docker run -v ${PWD}/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis
   - docker ps -a
 
 script:
