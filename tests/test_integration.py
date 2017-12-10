@@ -30,6 +30,7 @@ import unittest
 import proton
 import random
 import time
+import sys
 
 from cli_proton_python import sender, receiver, connector
 
@@ -749,10 +750,6 @@ class P2PTests(P2PTestCase):
 
 
 if __name__ == '__main__':
-    unittest.main(module=__name__, exit=False, verbosity=2)
+    trn = unittest.main(module=__name__, exit=False, verbosity=2)
+    sys.exit(not trn.result.wasSuccessful())
 
-    #assert not hasattr(sys.stdout, "getvalue")
-    #unittest.main(module=__name__, buffer=True, exit=False)
-
-    # SUITE = unittest.TestLoader().loadTestsFromTestCase(ControlOptionsTests)
-    # unittest.TextTestRunner(verbosity=2).run(SUITE)
