@@ -12,16 +12,11 @@ services:
 before_install:
   - mkdir -p ${PWD}/artemis-data/override
   - echo -e '<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">\n'
-            '<core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">\n   <security-enabled>false</security-enabled>\n</core></configuration>'
+            '<core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">\n   <security-enabled>false</security-enabled>\n</core>\n</configuration>'
             > ${PWD}/artemis-data/override/broker-00.xml
-  - cat ${PWD}/artemis-data/override/broker-00.xml
   - docker pull vromero/activemq-artemis
-  - CID=$(docker run -v ${PWD}/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis)
-  - docker logs ${CID}
+  - docker run -v ${PWD}/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis
   - docker ps -a
 
 script:
-  - PN_TRACE_FRM=1 cli-proton-python-sender --log-msgs dict
-  - PN_TRACE_FRM=1 cli-proton-python-receiver --log-msgs dict
-  - cd tests
-  - python test_integration.py
+  - cd tests;python test_integration.py
