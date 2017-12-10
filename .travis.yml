@@ -11,13 +11,9 @@ services:
 
 before_install:
   - mkdir -p /var/artemis-data/override
-  - cat > /var/artemis-data/override/broker-00.xml << EOF
-<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
-   <core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">
-      <security-enabled>false</security-enabled>
-   </core>
-</configuration>
-EOF
+  - echo -n '<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">\n'
+            '<core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">\n   <security-enabled>false</security-enabled>\n</core></configuration>'
+            > /var/artemis-data/override/broker-00.xml
   - cat /var/artemis-data/override/broker-00.xml
   - docker pull vromero/activemq-artemis
   - docker run v /var/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis
