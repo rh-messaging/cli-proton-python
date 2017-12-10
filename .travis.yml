@@ -1,0 +1,30 @@
+language: python
+python:
+    - "2.7"
+    - "3.4"
+
+install:
+  - pip install .
+
+services:
+  - docker
+
+before_install:
+  - mkdir -p /var/artemis-data/override
+  - cat > /var/artemis-data/override/broker-00.xml << EOF
+<configuration xmlns="urn:activemq" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="urn:activemq /schema/artemis-configuration.xsd">
+   <core xmlns="urn:activemq:core" xsi:schemaLocation="urn:activemq:core ">
+      <security-enabled>false</security-enabled>
+   </core>
+</configuration>
+EOF
+  - cat /var/artemis-data/override/broker-00.xml
+  - docker pull vromero/activemq-artemis
+  - docker run v /var/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis
+  - docker ps -a
+
+script:
+  - PN_TRACE_FRM=1 cli-proton-python-sender --log-msgs dict
+  - PN_TRACE_FRM=1 cli-proton-python-receiver --log-msgs dict
+  - cd tests
+  - python test_integration.py
