@@ -637,6 +637,10 @@ class TxMessageOptionsTests(MessageOptionsTests, TxSenderReceiverTestCase):
     def test_msg_reply_to(self):
         """ skipped in transactional mode """
 
+    @unittest.skip("currently disabled due to ARTEMIS-1535")
+    def test_msg_durable(self):
+        """ skipped in transactional mode """
+
 class TxMessageContentTests(MessageContentTests, TxSenderReceiverTestCase):
     ''' transactional message content test group '''
 
