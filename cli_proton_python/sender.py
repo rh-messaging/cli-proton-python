@@ -197,6 +197,8 @@ class Send(coreclient.CoreClient):
             msg.ttl = self.opts.msg_ttl / 1000
         if self.opts.msg_content_type is not None:
             msg.content_type = self.opts.msg_content_type
+        if self.opts.msg_address is not None:
+            msg.address = self.opts.msg_address
         else:
             msg.content_type = msg_content_type
         msg.properties = utils.prepare_flat_map(self.opts.msg_properties)

@@ -265,6 +265,8 @@ class SenderOptions(SRCoreOptions):
                          help="use the supplied id instead of generating one")
         group.add_option("-S", "--msg-subject", type="string",
                          help="specify a subject")
+        group.add_option("--msg-address", action="store", type="string",
+                         help="message address")
         group.add_option("--msg-reply-to", type="string",
                          help="specify reply-to address")
         group.add_option("--msg-durable", action="store", type="string", default="no",
@@ -296,12 +298,12 @@ class SenderOptions(SRCoreOptions):
                          metavar="NAME|~NAME",
                          action="callback", callback=to_unicode)
         group.add_option("--msg-content-from-file", action="store", type="string",
-                         help="AMQP message content loaded from file", metavar="<filename>")
+                         help="message content loaded from file", metavar="<filename>")
         group.add_option("--msg-content", action="callback", type="string",
-                         help="AMQP message content", metavar="<content>",
+                         help="message content", metavar="<content>",
                          callback=str_to_unicode)
         group.add_option("--msg-content-type", action="store", type="string",
-                         help="amqp message content type", metavar="<content-type>")
+                         help="message content type", metavar="<content-type>")
         group.add_option("--content-type", type="choice",
                          help="typecast the string arguments in msg-content* (default %default)",
                          choices=['string', 'int', 'long', 'float', 'bool'])
