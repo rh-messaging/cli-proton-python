@@ -137,6 +137,9 @@ class CoreOptions(optparse.OptionParser, object):
                          help='define custom connection handler')
         group.add_option("--conn-max-frame-size", type=int,
                          help='define custom maximum frame size in bytes (range: 512-4294967295)')
+        group.add_option("--conn-allowed-mechs", type="string",
+                         help='Define custom Allowed SASL mechanism list, '
+                              'separated by space e.g. "GSSAPI PLAIN"')
         self.add_option_group(group)
 
     def add_logging_options(self):

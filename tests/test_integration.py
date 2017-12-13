@@ -383,11 +383,18 @@ class ReactorOptionsTests(SenderReceiverTestCase):
     pass
 
 
-@unittest.skip("test class not implemented yet")
 class ConnectionOptionsTests(SenderReceiverTestCase):
     """ connection options test group """
-    pass
 
+    def test_auth_mechs_anonymous(self):
+        """ tests allowed authentication mechanisms: anonymous """
+        send_opts = self.get_sender_opts()
+        send_opts.conn_allowed_mechs = 'ANONYMOUS'
+        recv_opts = self.get_receiver_opts()
+        recv_opts.conn_allowed_mechs = 'ANONYMOUS'
+        sent_messages = self.run_sender(send_opts)
+        recv_messages = self.run_receiver(recv_opts)
+        self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
 
 @unittest.skip("test class not implemented yet")
 class LinkOptionsTests(SenderReceiverTestCase):
@@ -654,6 +661,9 @@ class TxReceiverOptionsTests(ReceiverOptionsTests, TxSenderReceiverTestCase):
 class TxLoggingOptionsTests(LoggingOptionsTests, TxSenderReceiverTestCase):
     """ transactional logging options test group """
 
+class TxConnectionOptionsTests(ConnectionOptionsTests, TxSenderReceiverTestCase):
+    """ transactional connection options test group """
+
 class TransactionOptionsTests(TxSenderReceiverTestCase):
     """ transactional options test group """
 
@@ -754,6 +764,6 @@ class P2PTests(P2PTestCase):
 
 
 if __name__ == '__main__':
-    trn = unittest.main(module=__name__, exit=False, verbosity=2)
-    sys.exit(not trn.result.wasSuccessful())
+    TRN = unittest.main(module=__name__, exit=False, verbosity=2)
+    sys.exit(not TRN.result.wasSuccessful())
 
