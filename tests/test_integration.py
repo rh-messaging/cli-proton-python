@@ -294,7 +294,7 @@ class MessageOptionsTests(SenderReceiverTestCase):
         self.assertLessEqual(recv_messages[0].ttl, send_opts.msg_ttl/1000.0)
 
     def test_msg_address(self):
-        """ tests message priority field """
+        """ tests message address field """
         send_opts = self.get_sender_opts()
         send_opts.msg_address = 'examples'
         send_opts.broker_url = '127.0.0.1:5672'
