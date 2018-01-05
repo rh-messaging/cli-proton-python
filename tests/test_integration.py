@@ -498,7 +498,7 @@ class ControlOptionsTests(SenderReceiverTestCase):
         self.run_receiver(recv_opts)
         self.assertTrue(1.1 > time.time() - tstamp > 0.9)
 
-    @unittest.skip("known bug: #TODO duration prefered over timeout")
+    @unittest.skip("known issue #17")
     def test_duration_timeout_receiver(self):
         """ tests combining receiver's duration and timeout option """
         send_opts = self.get_sender_opts()
@@ -637,7 +637,7 @@ class ReceiverOptionsTests(SenderReceiverTestCase):
 class TxControlOptionsTests(ControlOptionsTests, TxSenderReceiverTestCase):
     """ transactional options test group """
 
-    @unittest.skip("known bug:#TODO timeout not working w/ TX")
+    @unittest.skip("known issue#18")
     def test_timeout_receiver(self):
         pass
 
@@ -650,7 +650,7 @@ class TxMessageTypeTests(MessageTypeTests, TxSenderReceiverTestCase):
 class TxMessageOptionsTests(MessageOptionsTests, TxSenderReceiverTestCase):
     ''' transactional message fields test group '''
 
-    @unittest.skip("Bug #TODO, not working in transactional mode")
+    @unittest.skip("known issue#19")
     def test_msg_reply_to(self):
         """ skipped in transactional mode """
 
@@ -664,7 +664,7 @@ class TxMessageContentTests(MessageContentTests, TxSenderReceiverTestCase):
 class TxReceiverOptionsTests(ReceiverOptionsTests, TxSenderReceiverTestCase):
     """ transactional receiver options test group """
 
-    @unittest.skip("Bug #TODO, not working in transactional mode")
+    @unittest.skip("known issue#19")
     def test_message_reply_to(self):
         """ skipped in transactional mode """
 
