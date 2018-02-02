@@ -5,3 +5,8 @@ v1.0.1 -- November 24, 2017
 * json message output format support added
 * minor documentation and packaging changes
 * API documentation generation
+
+v1.0.2 -- February 02, 2018
+* address / amqp-to message field support
+* authentication mechanisms option support
+* existing bug references added to tests
