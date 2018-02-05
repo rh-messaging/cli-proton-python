@@ -132,12 +132,11 @@ class Send(coreclient.CoreClient):
         :return: string message content
         :rtype: str (unicode)
         """
-        if isinstance(content, str) and re.search('%[ 0-9]*d', content) is not None:
+        if content is not None and re.search('%[ 0-9]*d', content) is not None:
             self.msg_content_fmt = True
         if self.opts.content_type:
             return utils.retype_content(content, self.opts.content_type)
-        else:
-            return content
+        return content
 
     def prepare_content(self):
         """
@@ -163,8 +162,7 @@ class Send(coreclient.CoreClient):
             return self.prepare_list_content(), "amqp/list"
         elif self.opts.msg_map_items:
             return self.prepare_map_content(), "amqp/map"
-        else:
-            return self.prepare_string_content(content), "text/plain"
+        return self.prepare_string_content(content), "text/plain"
 
     def prepare_message(self):
         """

@@ -92,8 +92,7 @@ def hard_retype(value):
         except ValueError:
             if value.lower() in ('true', 'false'):
                 return value.lower() == 'true'
-            else:
-                return value
+            return value
 
 def print_message(msg, msg_format):
     """
@@ -135,8 +134,7 @@ def retype_content(content, content_type):
         return long(content)
     elif content_type == 'bool':
         return bool(content)
-    else:
-        return content
+    return content
 
 def prepare_flat_map(entries, e_type=None):
     """ prepares map content from multiple key, value pairs

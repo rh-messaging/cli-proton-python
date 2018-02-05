@@ -23,9 +23,9 @@
 from __future__ import absolute_import
 
 import sys
-import proton
 import json
 import ast
+import proton
 
 if sys.version_info > (3,):
     # define long for Python 3.x (int and long were unified)
@@ -166,8 +166,7 @@ class Formatter(object):
             return Formatter.format_dict(in_data)
         elif isinstance(in_data, list):
             return Formatter.format_list(in_data)
-        else:
-            return Formatter.format_string(in_data)
+        return Formatter.format_string(in_data)
 
     def print_message_as_dict(self):
         """

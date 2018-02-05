@@ -27,10 +27,10 @@ import threading
 import subprocess
 import ast
 import unittest
-import proton
 import random
 import time
 import sys
+import proton
 
 from cli_proton_python import sender, receiver, connector
 
@@ -370,6 +370,17 @@ class MessageContentTests(SenderReceiverTestCase):
         self.assertIsInstance(recv_messages[0].body, dict)
         self.assertEqual(sent_messages[0].content_type, 'amqp/map')
         self.assertEqual(recv_messages[0].content_type, 'amqp/map')
+
+    def test_msg_content_numbering(self):
+        """ tests message numbering """
+        send_opts = self.get_sender_opts()
+        send_opts.msg_content = 'message %d'
+        send_opts.count = random.randint(2, 10)
+        self.run_sender(send_opts)
+        recv_messages = self.run_receiver()
+        self.assertEqual(len(recv_messages), send_opts.count)
+        self.assertEqual(recv_messages[0].body, 'message 0')
+        self.assertEqual(recv_messages[(send_opts.count)-1].body, "message %s" %(send_opts.count-1))
 
 
 @unittest.skip("test not implemented yet")
@@ -748,7 +759,9 @@ class P2PTests(P2PTestCase):
         recv_opts.count = 1
         recv_thread = threading.Thread(target=self.run_receiver, args=[recv_opts])
         recv_thread.start()
-        sent_messages = self.run_sender()
+        send_opts = self.get_sender_opts()
+        send_opts.conn_allowed_mechs = 'ANONYMOUS'
+        sent_messages = self.run_sender(send_opts)
         recv_thread.join()
         self.assertTrue(len(sent_messages) == len(self.recv_messages) == 1)
 
@@ -760,7 +773,7 @@ class P2PTests(P2PTestCase):
                                universal_newlines=True)
         time.sleep(0.1)
         snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
-                                '--log-msgs', 'dict'],
+                                '--log-msgs', 'dict', '--conn-allowed-mechs', 'ANONYMOUS'],
                                stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
                                universal_newlines=True)
         snd.wait()
@@ -776,4 +789,3 @@ class P2PTests(P2PTestCase):
 if __name__ == '__main__':
     TRN = unittest.main(module=__name__, exit=False, verbosity=2)
     sys.exit(not TRN.result.wasSuccessful())
-
