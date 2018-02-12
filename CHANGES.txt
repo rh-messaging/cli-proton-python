@@ -14,3 +14,6 @@ v1.0.2 -- February 02, 2018
 v1.0.3 -- February 05, 2018
 * message numbering fix
 * use anonymous authentication mechanism in p2p tests
+
+v1.0.4 -- TBD, not yet live
+* message group sequence option support
