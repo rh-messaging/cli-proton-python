@@ -183,6 +183,10 @@ class Send(coreclient.CoreClient):
             msg.id = self.opts.msg_id
         if self.opts.msg_correlation_id is not None:
             msg.correlation_id = self.opts.msg_correlation_id
+        if self.opts.msg_group_id:
+            msg.group_id = self.opts.msg_group_id.decode()
+        if self.opts.msg_group_seq:
+            msg.group_sequence = self.opts.msg_group_seq
         if self.opts.msg_user_id is not None:
             msg.user_id = self.opts.msg_user_id.encode('utf-8')
         if self.opts.msg_group_id is not None:

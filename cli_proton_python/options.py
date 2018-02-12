@@ -307,6 +307,10 @@ class SenderOptions(SRCoreOptions):
         group.add_option("--content-type", type="choice",
                          help="typecast the string arguments in msg-content* (default %default)",
                          choices=['string', 'int', 'long', 'float', 'bool'])
+        group.add_option("--msg-group-id", action="store", type="string",
+                         help="JMSX Group ID", metavar='<group-id>')
+        group.add_option("--msg-group-seq", type="int", action="store",
+                         help="message group sequence - JMSXGroupSeq")
         self.add_option_group(group)
 
     def add_reactor_options(self):
