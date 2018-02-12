@@ -280,8 +280,8 @@ class MessageOptionsTests(SenderReceiverTestCase):
         send_opts.msg_group_seq = 1
         sent_messages = self.run_sender(send_opts)
         recv_messages = self.run_receiver()
-        self.assertEqual(sent_messages[0].group_id, send_opts.msg_group_id)
-        self.assertEqual(sent_messages[0].group_id, recv_messages[0].group_id)
+        self.assertEqual(sent_messages[0].group_sequence, send_opts.msg_group_seq)
+        self.assertEqual(sent_messages[0].group_sequence, recv_messages[0].group_sequence)
 
     def test_msg_priority(self):
         """ tests message priority field """
