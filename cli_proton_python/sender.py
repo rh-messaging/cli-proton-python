@@ -187,6 +187,8 @@ class Send(coreclient.CoreClient):
             msg.user_id = self.opts.msg_user_id.encode('utf-8')
         if self.opts.msg_group_id is not None:
             msg.group_id = self.opts.msg_group_id.encode('utf-8')
+        if self.opts.msg_group_seq:
+            msg.group_sequence = self.opts.msg_group_seq
         if self.opts.msg_reply_to is not None:
             msg.reply_to = self.opts.msg_reply_to
         if self.opts.msg_subject is not None:

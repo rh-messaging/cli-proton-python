@@ -282,6 +282,8 @@ class SenderOptions(SRCoreOptions):
                          help="message user id")
         group.add_option("--msg-group-id", type="string",
                          help="message group id")
+        group.add_option("--msg-group-seq", type="int", action="store",
+                         help="message group sequence")
         group.add_option("-P", "--msg-property", type="string",
                          help="specify message property ('~' enables type auto-cast)",
                          dest="msg_properties", default=[],
