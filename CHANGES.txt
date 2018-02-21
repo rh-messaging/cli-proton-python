@@ -17,3 +17,4 @@ v1.0.3 -- February 05, 2018
 
 v1.0.4 -- TBD, not yet live
 * message group sequence option support
+* python3 compatibility fix for ClinetException handling in connnector
