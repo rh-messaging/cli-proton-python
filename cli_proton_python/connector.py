@@ -199,7 +199,7 @@ def run_connectors(opts, results, errors, stats=None):
             container.run()
         except coreclient.ClientException as exc:
             simple_connector.result['connection']['error'] = 1
-            errors.append(exc.message)
+            errors.append(str(exc))
     finally:
         results.append(simple_connector.get_conn_result())
         if stats is not None:
