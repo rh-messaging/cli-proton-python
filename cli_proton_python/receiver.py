@@ -219,13 +219,15 @@ class Recv(coreclient.CoreClient):
         :param event: reactor event
         :type event: proton.Event
         """
+        if event.receiver is None:
+            return  # Bail out if this is event for the internal transaction link
+
         # Timeout on start
         if self.opts.timeout:
-            if event.receiver is not None:
-                self.timeout = event.reactor.schedule(self.opts.timeout, Timeout(self, event))
+            self.timeout = event.reactor.schedule(self.opts.timeout, Timeout(self, event))
             if self.msg_expected_cnt == 0 and (self.opts.tx_size or self.opts.tx_endloop_action):
                 event.receiver.drain_mode = True
-        elif event.receiver and self.msg_expected_cnt == 0:
+        elif self.msg_expected_cnt == 0:
             event.receiver.drain_mode = True
 
     def on_link_flow(self, event):
