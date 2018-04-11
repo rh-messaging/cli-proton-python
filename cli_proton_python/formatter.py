@@ -136,7 +136,7 @@ class Formatter(object):
 
         :param in_data: input data
         :type in_data: str, unicode, bytes
-        :return: input data string formated as string
+        :return: input data string formatted as string
         :rtype: str
         """
         if isinstance(in_data, bytes):
