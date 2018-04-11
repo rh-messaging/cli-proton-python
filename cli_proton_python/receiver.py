@@ -19,7 +19,7 @@
 # specific language governing permissions and limitations
 # under the License.
 
-""" Proton reactive API python reciever client """
+""" Proton reactive API python receiver client """
 
 from __future__ import absolute_import
 
