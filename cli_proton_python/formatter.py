@@ -140,7 +140,7 @@ class Formatter(object):
         :rtype: str
         """
         if isinstance(in_data, bytes):
-            in_data = in_data.decode()
+            in_data = in_data.replace(b'\0', b'\\0').decode()
         int_res = "'%s'" % (Formatter.quote_string_escape(in_data))
         return int_res
 
