@@ -381,7 +381,8 @@ class ErrorsHandler(object):  # pylint: disable=too-few-public-methods
                 and event.connection.remote_condition):
             err_message = "Connection error: %s ..." \
                           % self._evaluate_endpoint_error(event.connection, "connection")
-            if self.conn_reconnect == "false":
+            if ("AMQ119031" in err_message
+                    or self.conn_reconnect == "false"):
                 raise ClientException(err_message)
             else:
                 utils.dump_error(err_message)
