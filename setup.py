@@ -40,7 +40,7 @@ with c_open(path.join(CWD, 'README.rst'), encoding='utf-8') as f:
 setup(
     name='cli-proton-python',
     # Versions should comply with PEP440.
-    version='1.0.3',
+    version='1.0.4',
     description="AMQP 1.0 Python Proton reactive clients set(sender, receiver, connector)",
     long_description=LONG_DESCRIPTION,
     url='https://github.com/rh-messaging/cli-proton-python',
@@ -63,6 +63,7 @@ setup(
         'Programming Language :: Python :: 3.3',
         'Programming Language :: Python :: 3.4',
         'Programming Language :: Python :: 3.5',
+        'Programming Language :: Python :: 3.6',
     ],
 
     keywords='unified messaging clients sender receiver amqp',

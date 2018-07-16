@@ -7,14 +7,21 @@ v1.0.1 -- November 24, 2017
 * API documentation generation
 
 v1.0.2 -- February 02, 2018
+
 * address / amqp-to message field support
 * authentication mechanisms option support
 * existing bug references added to tests
 
 v1.0.3 -- February 05, 2018
+
 * message numbering fix
 * use anonymous authentication mechanism in p2p tests
 
-v1.0.4 -- TBD, not yet live
+v1.0.4 -- July 16, 2018
+
+* message group id must be of type string
 * message group sequence option support
 * python3 compatibility fix for ClinetException handling in connnector
+* do not process internal tx-related link open even
+* replace null bytes in output with '\\0' placeholders
+* raise exception when user is not validated on broker side
