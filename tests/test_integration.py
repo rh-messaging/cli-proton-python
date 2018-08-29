@@ -794,6 +794,50 @@ class P2PTests(P2PTestCase):
         self.assertTrue(isinstance(ast.literal_eval(sent_message[0]), dict))
         self.assertEqual(sent_message, recv_message)
 
+    def test_p2p_snd_rcv_subprocess_sasl_enabled(self):
+        """ tests point-to-point delivery with enabled sasl"""
+        rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
+                                '-c', '1', '--recv-listen', '--log-msgs', 'dict',
+                                '--conn-sasl-enabled', 'true'],
+                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+                               universal_newlines=True)
+        time.sleep(0.1)
+        snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
+                                '--log-msgs', 'dict', '--conn-allowed-mechs', 'ANONYMOUS',
+                                '--conn-sasl-enabled', 'true'],
+                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+                               universal_newlines=True)
+        snd.wait()
+        rcv.wait()
+        sent_message = [l.strip() for l in snd.stdout]
+        recv_message = [l.strip() for l in rcv.stdout]
+        snd.stdout.close()
+        rcv.stdout.close()
+        self.assertTrue(isinstance(ast.literal_eval(sent_message[0]), dict))
+        self.assertEqual(sent_message, recv_message)
+
+    def test_p2p_snd_rcv_subprocess_sasl_disabled(self):
+        """ tests point-to-point delivery with disabled sasl"""
+        rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
+                                '-c', '1', '--recv-listen', '--log-msgs', 'dict',
+                                '--conn-sasl-enabled', 'false'],
+                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+                               universal_newlines=True)
+        time.sleep(0.1)
+        snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
+                                '--log-msgs', 'dict', '--conn-allowed-mechs', 'ANONYMOUS',
+                                '--conn-sasl-enabled', 'false'],
+                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+                               universal_newlines=True)
+        snd.wait()
+        rcv.wait()
+        sent_message = [l.strip() for l in snd.stdout]
+        recv_message = [l.strip() for l in rcv.stdout]
+        snd.stdout.close()
+        rcv.stdout.close()
+        self.assertTrue(isinstance(ast.literal_eval(sent_message[0]), dict))
+        self.assertEqual(sent_message, recv_message)
+
 
 if __name__ == '__main__':
     TRN = unittest.main(module=__name__, exit=False, verbosity=2)
