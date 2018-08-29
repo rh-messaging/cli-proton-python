@@ -137,6 +137,12 @@ class CoreOptions(optparse.OptionParser, object):
                          help='define custom connection handler')
         group.add_option("--conn-max-frame-size", type=int,
                          help='define custom maximum frame size in bytes (range: 512-4294967295)')
+        group.add_option("--conn-sasl-enabled", type="choice", default='true',
+                         help='enable connection SASL (default %default)',
+                         choices=['true', 'false', 'True', 'False'], action='callback',
+                         callback=lambda option, opt_str, value, parser: setattr(parser.values,
+                                                                                 option.dest,
+                                                                                 value.lower()))
         group.add_option("--conn-allowed-mechs", type="string",
                          help='Define custom Allowed SASL mechanism list, '
                               'separated by space e.g. "GSSAPI PLAIN"')
