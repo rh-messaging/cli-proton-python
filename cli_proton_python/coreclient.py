@@ -91,6 +91,8 @@ class CoreClient(proton.handlers.MessagingHandler):
             raise NotImplementedError("Option not implemented yet: 'conn_handler'")
         if self.opts.conn_max_frame_size is not None:
             conn_opts['max_frame_size'] = self.opts.conn_max_frame_size
+        if self.opts.conn_sasl_enabled == 'false':
+            conn_opts['sasl_enabled'] = False
         if self.opts.conn_allowed_mechs is not None:
             conn_opts['allowed_mechs'] = self.opts.conn_allowed_mechs
         return conn_opts
