@@ -25,3 +25,7 @@ v1.0.4 -- July 16, 2018
 * do not process internal tx-related link open even
 * replace null bytes in output with '\\0' placeholders
 * raise exception when user is not validated on broker side
+
+v1.0.5 -- November 14, 2018
+
+* new option for enabling/disabling SASL
