@@ -73,7 +73,7 @@ class CoreClient(proton.handlers.MessagingHandler):
             if not isinstance(self.opts.conn_urls, (str, list)):
                 raise ValueError('Invalid conn-urls value, expected string or list: %s'
                                  % self.opts.conn_urls)
-            conn_opts['urls'] = proton._reactor.Urls(self.opts.conn_urls)
+            conn_opts['urls'] = self.opts.conn_urls
         if self.opts.conn_reconnect == 'false':
             conn_opts['reconnect'] = False
         elif (self.opts.conn_reconnect_interval
