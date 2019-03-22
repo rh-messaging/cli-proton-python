@@ -426,6 +426,16 @@ class ConnectionOptionsTests(SenderReceiverTestCase):
         recv_messages = self.run_receiver(recv_opts)
         self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
 
+    def test_read_config_file_send_receive_opts(self):
+        """ tests connection from configuration file """
+        send_opts = self.get_sender_opts()
+        send_opts.conn_use_config_file = True
+        recv_opts = self.get_receiver_opts()
+        recv_opts.conn_use_config_file = True
+        sent_messages = self.run_sender(send_opts)
+        recv_messages = self.run_receiver(recv_opts)
+        self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
+
 @unittest.skip("test class not implemented yet")
 class LinkOptionsTests(SenderReceiverTestCase):
     """ link options test group """
@@ -754,6 +764,12 @@ class CommandLineTests(CommandLineTestCase):
         recv.wait()
         recv_messages = [l.strip() for l in recv.stdout]
         recv.stdout.close()
+        self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
+    
+    def test_read_config_file_send_receive_cli(self):
+        """ basic send receive test with connection configuration file """
+        sent_messages = self.run_sender(['--log-msgs', 'dict', '--conn-use-config-file'])
+        recv_messages = self.run_receiver(['--log-msgs', 'dict', '--conn-use-config-file'])
         self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
 
 
