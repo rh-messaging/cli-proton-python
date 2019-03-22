@@ -97,6 +97,8 @@ class CoreOptions(optparse.OptionParser, object):
     def add_connection_options(self):
         """ add the connection options """
         group = optparse.OptionGroup(self, "Connection Options")
+        group.add_option("--conn-use-config-file", action="store_true",
+                         help='use configuration file for connection')
         group.add_option("--conn-urls", type="string",
                          help='define connection urls')
         group.add_option("--conn-reconnect", type="choice", default='true',

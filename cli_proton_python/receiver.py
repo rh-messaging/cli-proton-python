@@ -191,8 +191,11 @@ class Recv(coreclient.CoreClient):
                   if opt.startswith('conn') and val is not None]) != 0:
             # some connection options were given
             self.set_up_ssl(event)
-            conn_opts = self.parse_connection_options()
-            conn = event.container.connect(self.url, **conn_opts)
+            if self.opts.conn_use_config_file:
+                conn = event.container.connect()
+            else:
+                conn_opts = self.parse_connection_options()
+                conn = event.container.connect(self.url, **conn_opts)
             self.receiver = event.container.create_receiver(conn, self.url.path,
                                                             options=self.link_opts,
                                                             dynamic=self.opts.dynamic)

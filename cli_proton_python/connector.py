@@ -81,9 +81,13 @@ class Connector(coreclient.CoreClient):
         :param event: reactor event
         :type event: proton.Event
         """
-        conn_opts = self.parse_connection_options()
-        conn_opts['reconnect'] = False
-        self.connection = event.container.connect(self.url, **conn_opts)
+        if self.opts.conn_use_config_file:
+            self.connection = event.container.connect()
+        else:
+            conn_opts = self.parse_connection_options()
+            conn_opts['reconnect'] = False
+            self.connection = event.container.connect(self.url, **conn_opts)
+
         if "E" in self.opts.obj_ctrl:
             self.session = self.connection.session()
             if "S" in self.opts.obj_ctrl:
