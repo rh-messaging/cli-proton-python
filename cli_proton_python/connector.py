@@ -86,7 +86,11 @@ class Connector(coreclient.CoreClient):
         else:
             conn_opts = self.parse_connection_options()
             conn_opts['reconnect'] = False
-            self.connection = event.container.connect(self.url, **conn_opts)
+            if 'urls' in conn_opts:
+                conn_opts['urls'].insert(0, self.url)
+                self.connection = event.container.connect(**conn_opts)
+            else:
+                self.connection = event.container.connect(self.url, **conn_opts)
 
         if "E" in self.opts.obj_ctrl:
             self.session = self.connection.session()

@@ -242,7 +242,11 @@ class Send(coreclient.CoreClient):
                 conn = event.container.connect()
             else:
                 conn_opts = self.parse_connection_options()
-                conn = event.container.connect(self.url, **conn_opts)
+                if 'urls' in conn_opts:
+                    conn_opts['urls'].insert(0, self.url)
+                    conn = event.container.connect(**conn_opts)
+                else:
+                    conn = event.container.connect(self.url, **conn_opts)
             event.container.create_sender(conn, self.url.path, options=self.link_opts)
         else:
             event.container.create_sender(self.url, options=self.link_opts)
