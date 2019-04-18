@@ -195,7 +195,11 @@ class Recv(coreclient.CoreClient):
                 conn = event.container.connect()
             else:
                 conn_opts = self.parse_connection_options()
-                conn = event.container.connect(self.url, **conn_opts)
+                if 'urls' in conn_opts:
+                    conn_opts['urls'].insert(0, self.url)
+                    conn = event.container.connect(**conn_opts)
+                else:
+                    conn = event.container.connect(self.url, **conn_opts)
             self.receiver = event.container.create_receiver(conn, self.url.path,
                                                             options=self.link_opts,
                                                             dynamic=self.opts.dynamic)
