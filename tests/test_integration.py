@@ -772,6 +772,22 @@ class CommandLineTests(CommandLineTestCase):
         recv_messages = self.run_receiver(['--log-msgs', 'dict', '--conn-use-config-file'])
         self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
 
+    def test_conn_urls_send_receive_cli(self):
+        """ basic send receive test with connection urls """
+        sent_messages = self.run_sender([
+            '--broker-url', '127.0.0.1:5671/examples',
+            '--log-msgs', 'dict',
+            '--conn-urls', '127.0.0.1:5673,127.0.0.1:5672',
+        ])
+        recv_messages = self.run_receiver([
+            '--broker-url', '127.0.0.1:5671/examples',
+            '--log-msgs', 'dict',
+            '--conn-urls', '127.0.0.1:5673,127.0.0.1:5672',
+        ])
+        sent_messages = [m for m in sent_messages if m.startswith('{')]
+        recv_messages = [m for m in recv_messages if m.startswith('{')]
+        self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
+
 
 # Peer-to-peer tests
 
