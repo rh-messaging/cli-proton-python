@@ -778,12 +778,12 @@ class CommandLineTests(CommandLineTestCase):
         sent_messages = self.run_sender([
             '--broker-url', '127.0.0.1:5671/examples',
             '--log-msgs', 'dict',
-            '--conn-urls', '127.0.0.1:5673,127.0.0.1:5672',
+            '--conn-urls', '127.0.0.1:5670,127.0.0.1:5672',
         ])
         recv_messages = self.run_receiver([
             '--broker-url', '127.0.0.1:5671/examples',
             '--log-msgs', 'dict',
-            '--conn-urls', '127.0.0.1:5673,127.0.0.1:5672',
+            '--conn-urls', '127.0.0.1:5670,127.0.0.1:5672',
         ])
         sent_messages = [m for m in sent_messages if m.startswith('{')]
         recv_messages = [m for m in recv_messages if m.startswith('{')]
