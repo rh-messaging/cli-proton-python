@@ -328,6 +328,14 @@ class SenderOptions(SRCoreOptions):
                          help="report error on peer disconnect")
         self.add_option_group(group)
 
+    def add_control_options(self):
+        """ add the control options """
+        super(SenderOptions, self).add_control_options()
+        group = [group for group in self.option_groups if group.title == "Control Options"][0]
+        group.add_option("--on-release", type="choice",
+                         help="action to take when a message is released",
+                         choices=["ignore", "retry", "fail"], default="ignore")
+
 
 class ReceiverOptions(SRCoreOptions):
     """ Proton reactive API python receiver specific client options """

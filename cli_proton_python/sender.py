@@ -53,6 +53,7 @@ class Send(coreclient.CoreClient):
             reactor_opts['peer_close_is_error'] = True
         super(Send, self).__init__(opts, reactor_opts)
         self.msg_sent_cnt = 0
+        self.msg_released_cnt = 0
         self.msg_confirmed_cnt = 0
         self.msg_total_cnt = opts.count
         self.msg_content_fmt = False
@@ -223,7 +224,7 @@ class Send(coreclient.CoreClient):
         if self.opts.log_stats == 'endpoints':
             utils.dump_event(self.event)
 
-        if self.opts.link_at_most_once and self.msg_sent_cnt == self.msg_total_cnt:
+        if self.opts.link_at_most_once and self.msg_sent_cnt - self.msg_released_cnt == self.msg_total_cnt:
             self.tear_down(self.event)
 
     def on_start(self, event):
@@ -263,7 +264,7 @@ class Send(coreclient.CoreClient):
             self.msg_content = self.msg.body
             self.event = event
             # we are sending first message or first after we previously ran out of credit
-            if not self.tearing_down and self.msg_sent_cnt < self.msg_total_cnt:
+            if not self.tearing_down and self.msg_sent_cnt - self.msg_released_cnt < self.msg_total_cnt:
                 if self.msg_sent_cnt != 0:
                     # we previously ran out of credit
                     self.next_task = event.reactor.schedule(0, self)
@@ -301,6 +302,26 @@ class Send(coreclient.CoreClient):
         if not self.auto_settle and self.msg_confirmed_cnt == self.msg_total_cnt:
             self.tear_down(event, settled=True)
 
+    def on_released(self, event):
+        """
+        called when message is released by the remote container disconnects before
+        message has been confirmed
+        :param event:
+        :return:
+        """
+        if self.opts.on_release == 'fail':
+            raise coreclient.ClientException('Message released: %s' % event.delivery.tag)
+        elif self.opts.on_release == 'retry':
+            # incrementing count of messages released only when action is retry
+            # if action is ignore, the released count will remain untouched to preserve
+            # original behavior of the sender client
+            self.msg_released_cnt += 1
+
+            # at this point message was released after DelayedNoop timer task was scheduled
+            # and so we should reschedule a resend or sender will get stuck, since self.event is assigned
+            if not self.tearing_down and self.event and self.msg_sent_cnt >= self.msg_total_cnt:
+                self.next_task = self.event.reactor.schedule(self.delay_before + self.delay_after, self)
+
     def on_disconnected(self, event):
         """
         called when the socket is disconnected
@@ -315,19 +336,19 @@ class Send(coreclient.CoreClient):
         """
         next send action scheduler
 
-        the Send object itself is shecduled to perform next send action, that is why it contains
-        timer_task method method
+        the Send object itself is scheduled to perform next send action, that is why it contains
+        timer_task method
 
         incoming event object does not contain many fields, that is why self.event is used
         """
         # can send message
-        if self.event.sender.credit and self.msg_sent_cnt < self.msg_total_cnt:
+        if self.event and self.event.sender.credit and self.msg_sent_cnt - self.msg_released_cnt < self.msg_total_cnt:
             self.send_message()
         else:
             self.event = None
             return
         # should send more messages
-        if not self.tearing_down and self.msg_sent_cnt < self.msg_total_cnt:
+        if not self.tearing_down and self.msg_sent_cnt - self.msg_released_cnt < self.msg_total_cnt:
             self.next_task = self.event.reactor.schedule(self.delay_before + self.delay_after, self)
         else:
             self.event.reactor.schedule(self.delay_after, coreclient.DelayedNoop())
