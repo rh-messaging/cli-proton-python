@@ -5,6 +5,9 @@ __pycache__/
 .idea
 docs/_build/*
 docs/api
+/artemis-data/
+/qpid-dispatch/
 
 /*.egg-info
 /dist/
+/build/

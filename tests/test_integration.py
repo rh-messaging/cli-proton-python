@@ -215,6 +215,7 @@ class MessageDeliveryTests(SenderReceiverTestCase):
         self.assertEqual(len(sent_messages), send_opts.count)
         self.assertEqual(len(recv_messages), send_opts.count)
 
+
 class MessageTypeTests(SenderReceiverTestCase):
     """ message type test group """
 
@@ -787,6 +788,52 @@ class CommandLineTests(CommandLineTestCase):
         sent_messages = [m for m in sent_messages if m.startswith('{')]
         recv_messages = [m for m in recv_messages if m.startswith('{')]
         self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
+
+    def test_send_receive_on_release(self):
+        """
+        tests basic send and receive of a message using 10 concurrent receivers
+        and enforces usage of '--on-release retry'
+        :return:
+        """
+        # Total number of messages expected to be exchanged
+        TOTAL_MSGS = 100
+        # Number of concurrent receivers accepting messages
+        RECV_INSTANCES = 10
+        RECV_COUNT = TOTAL_MSGS/RECV_INSTANCES
+        receivers = list()
+        receiver_args = ['--action', 'release', '-b', '0.0.0.0:5673/examples',
+                         '--log-msgs', 'dict', '-c', "%s" % int(RECV_COUNT),
+                         '--timeout', '30']
+
+        # running one single receiver that will release all messages
+        recv_release = self.run_receiver(receiver_args, in_wait=False)
+
+        # multiple receivers that will accept all messages
+        for _ in range(RECV_INSTANCES):
+            recv = self.run_receiver(receiver_args[2:], in_wait=False)
+            receivers.append(recv)
+
+        # running sender and retrieving amount of messages sent
+        sent = self.run_sender(['-b', '0.0.0.0:5673/examples', '--log-msgs', 'dict',
+                                '-c', "%s" % TOTAL_MSGS, '--timeout', '30', '--on-release', 'retry'])
+        sent_msgs = len(sent)
+
+        # counting received messages (accepted)
+        received_msgs = 0
+        for recv in receivers:
+            recv.wait()
+            received_msgs += len(recv.stdout.readlines())
+            recv.stdout.close()
+
+        # waiting on recv_release to complete
+        recv_release.wait()
+        released_msgs = len(recv_release.stdout.readlines())
+        recv_release.stdout.close()
+
+        # sender must have sent the total amount msgs plus number of released msgs
+        self.assertGreaterEqual(sent_msgs, TOTAL_MSGS + RECV_COUNT)
+        self.assertEqual(received_msgs, TOTAL_MSGS)
+        self.assertEqual(released_msgs, RECV_COUNT)
 
 
 # Peer-to-peer tests
