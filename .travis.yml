@@ -11,9 +11,13 @@ services:
 
 before_install:
   - mkdir -p ${PWD}/artemis-data/override
+  - mkdir -p ${PWD}/qpid-dispatch
   - cp ${PWD}/tests/.broker-00.xml ${PWD}/artemis-data/override/broker-00.xml
+  - cp ${PWD}/tests/.qdrouterd.conf ${PWD}/qpid-dispatch/qdrouterd.conf
   - docker pull vromero/activemq-artemis
+  - docker pull rhmessagingqe/qpid-dispatch:ubuntu1804
   - docker run -v ${PWD}/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis
+  - docker run -v ${PWD}/qpid-dispatch:/var/lib/qdrouterd -p 5673:5673 -d rhmessagingqe/qpid-dispatch:ubuntu1804
   - docker ps -a
 
 script:
