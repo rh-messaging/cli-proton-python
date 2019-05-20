@@ -529,6 +529,15 @@ class ControlOptionsTests(SenderReceiverTestCase):
         self.run_receiver(recv_opts)
         self.assertTrue(1.1 > time.time() - tstamp > 0.9)
 
+    def test_timeout_sender(self):
+        """ tests sender's time-out option """
+        send_opts = self.get_sender_opts()
+        send_opts.broker_url = '127.0.0.1:5673/examples'
+        send_opts.timeout = 1
+        tstamp = time.time()
+        self.run_sender(send_opts)
+        self.assertTrue(1.1 > time.time() - tstamp > 0.9)
+
     @unittest.skip("known issue #17")
     def test_duration_timeout_receiver(self):
         """ tests combining receiver's duration and timeout option """

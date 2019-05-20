@@ -33,6 +33,31 @@ import proton.handlers
 from cli_proton_python import coreclient, options, utils
 
 
+class Timeout(object):  # pylint: disable=too-few-public-methods
+    """ Scheduler object for timeout control """
+
+    def __init__(self, parent, event):
+        """
+        Timeout constructor
+        saving parent_ptr to get current data
+        :param parent: related sender object
+        :type parent: cli_proton_python.Send
+        :param event: reactor event
+        :type event: proton.Event
+        """
+        self.parent_ptr = parent
+        self.parent_event = event
+
+    def on_timer_task(self, _):
+        """ on_timer_task action handler
+        """
+        # Stops container
+        if self.parent_event.container:
+            self.parent_event.container.stop()
+
+        self.parent_ptr.tear_down(self.parent_event)
+
+
 class Send(coreclient.CoreClient):
     """ Proton reactive API python sender client
 
@@ -207,6 +232,21 @@ class Send(coreclient.CoreClient):
 
         return msg
 
+    def schedule_timeout(self, event):
+        """
+        Cancels an existing timeout (if one exists).
+        Next it schedules a new timeout if "--timeout" provided.
+        :param event: Reactor event
+        :type event: proton.Event
+        """
+        # Cancels an existing timeout
+        if self.timeout:
+            self.timeout.cancel()
+
+        # Schedules a new timeout if --timeout provided.
+        if self.opts.timeout:
+            self.timeout = event.reactor.schedule(self.opts.timeout, Timeout(self, event))
+
     def send_message(self):
         """ sends a message """
         # close the connection if nothing to send
@@ -220,6 +260,9 @@ class Send(coreclient.CoreClient):
         self.msg_sent_cnt += 1
 
         self.print_message(self.msg)
+
+        # set up a new timeout (if one provided)
+        self.schedule_timeout(self.event)
 
         if self.opts.log_stats == 'endpoints':
             utils.dump_event(self.event)
@@ -251,6 +294,9 @@ class Send(coreclient.CoreClient):
             event.container.create_sender(conn, self.url.path, options=self.link_opts)
         else:
             event.container.create_sender(self.url, options=self.link_opts)
+
+        # Schedule a timeout (if needed)
+        self.schedule_timeout(event)
 
     def on_sendable(self, event):
         """
@@ -401,6 +447,9 @@ class TxSend(Send, proton.handlers.TransactionHandler):
 
             self.print_message(msg)
 
+            # Schedule a timeout (if needed)
+            self.schedule_timeout(event)
+
             if self.opts.duration != 0 and self.opts.duration_mode == 'after-send':
                 utils.sleep4next(self.start_tm, self.msg_total_cnt, self.opts.duration,
                                  self.msg_processed_cnt + self.current_batch)
@@ -450,6 +499,9 @@ class TxSend(Send, proton.handlers.TransactionHandler):
         conn = event.container.connect(self.url)
         self.sender = event.container.create_sender(conn, self.url.path, options=self.link_opts)
         event.container.declare_transaction(conn, handler=self)
+
+        # Schedule a timeout (if needed)
+        self.schedule_timeout(event)
 
     def on_transaction_declared(self, event):
         """
