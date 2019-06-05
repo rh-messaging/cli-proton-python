@@ -859,7 +859,7 @@ class P2PTests(P2PTestCase):
         rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict'],
                                # TODO uncomment when the following issue is fixed:
-                               #   https://issues.jboss.org/browse/ENTMQCL-1364 is fixed
+                               #   https://issues.jboss.org/browse/ENTMQCL-1364
                                # stderr=subprocess.STDOUT, 
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
@@ -883,7 +883,7 @@ class P2PTests(P2PTestCase):
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict',
                                 '--conn-sasl-enabled', 'true'],
                                # TODO uncomment when the following issue is fixed:
-                               #   https://issues.jboss.org/browse/ENTMQCL-1364 is fixed
+                               #   https://issues.jboss.org/browse/ENTMQCL-1364
                                # stderr=subprocess.STDOUT, 
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
@@ -908,7 +908,7 @@ class P2PTests(P2PTestCase):
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict',
                                 '--conn-sasl-enabled', 'false'],
                                # TODO uncomment when the following issue is fixed:
-                               #   https://issues.jboss.org/browse/ENTMQCL-1364 is fixed
+                               #   https://issues.jboss.org/browse/ENTMQCL-1364
                                # stderr=subprocess.STDOUT, 
                                stdout=subprocess.PIPE,
                                universal_newlines=True)
