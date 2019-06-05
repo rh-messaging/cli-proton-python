@@ -815,7 +815,8 @@ class CommandLineTests(CommandLineTestCase):
 
         # running sender and retrieving amount of messages sent
         sent = self.run_sender(['-b', '0.0.0.0:5673/examples', '--log-msgs', 'dict',
-                                '-c', "%s" % TOTAL_MSGS, '--timeout', '30', '--on-release', 'retry'])
+                                '-c', "%s" % TOTAL_MSGS, '--timeout', '30',
+                                '--on-release', 'retry'])
         sent_msgs = len(sent)
 
         # counting received messages (accepted)
@@ -857,7 +858,10 @@ class P2PTests(P2PTestCase):
         """ tests point-to-point delivery """
         rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict'],
-                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+                               # TODO uncomment when the following issue is fixed:
+                               #   https://issues.jboss.org/browse/ENTMQCL-1364 is fixed
+                               # stderr=subprocess.STDOUT, 
+                               stdout=subprocess.PIPE,
                                universal_newlines=True)
         time.sleep(0.1)
         snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
@@ -878,7 +882,10 @@ class P2PTests(P2PTestCase):
         rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict',
                                 '--conn-sasl-enabled', 'true'],
-                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+                               # TODO uncomment when the following issue is fixed:
+                               #   https://issues.jboss.org/browse/ENTMQCL-1364 is fixed
+                               # stderr=subprocess.STDOUT, 
+                               stdout=subprocess.PIPE,
                                universal_newlines=True)
         time.sleep(0.1)
         snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
@@ -900,7 +907,10 @@ class P2PTests(P2PTestCase):
         rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict',
                                 '--conn-sasl-enabled', 'false'],
-                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
+                               # TODO uncomment when the following issue is fixed:
+                               #   https://issues.jboss.org/browse/ENTMQCL-1364 is fixed
+                               # stderr=subprocess.STDOUT, 
+                               stdout=subprocess.PIPE,
                                universal_newlines=True)
         time.sleep(0.1)
         snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
