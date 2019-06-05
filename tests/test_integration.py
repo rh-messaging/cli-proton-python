@@ -858,10 +858,7 @@ class P2PTests(P2PTestCase):
         """ tests point-to-point delivery """
         rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict'],
-                               # TODO uncomment when the following issue is fixed:
-                               #   https://issues.jboss.org/browse/ENTMQCL-1364
-                               # stderr=subprocess.STDOUT, 
-                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
                                universal_newlines=True)
         time.sleep(0.1)
         snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
@@ -882,10 +879,7 @@ class P2PTests(P2PTestCase):
         rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict',
                                 '--conn-sasl-enabled', 'true'],
-                               # TODO uncomment when the following issue is fixed:
-                               #   https://issues.jboss.org/browse/ENTMQCL-1364
-                               # stderr=subprocess.STDOUT, 
-                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
                                universal_newlines=True)
         time.sleep(0.1)
         snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
@@ -907,10 +901,7 @@ class P2PTests(P2PTestCase):
         rcv = subprocess.Popen(['../cli_proton_python/receiver.py', '-b', 'localhost:8888',
                                 '-c', '1', '--recv-listen', '--log-msgs', 'dict',
                                 '--conn-sasl-enabled', 'false'],
-                               # TODO uncomment when the following issue is fixed:
-                               #   https://issues.jboss.org/browse/ENTMQCL-1364
-                               # stderr=subprocess.STDOUT, 
-                               stdout=subprocess.PIPE,
+                               stderr=subprocess.STDOUT, stdout=subprocess.PIPE,
                                universal_newlines=True)
         time.sleep(0.1)
         snd = subprocess.Popen(['../cli_proton_python/sender.py', '-b', 'localhost:8888',
