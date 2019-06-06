@@ -29,3 +29,10 @@ v1.0.4 -- July 16, 2018
 v1.0.5 -- November 14, 2018
 
 * new option for enabling/disabling SASL
+
+v1.0.6 -- June 6, 2019
+
+* new option --conn-use-config-file for read-config-file feature
+* use conn-urls properly in all clients
+* added support for handling on_released events
+* added support for timeout to sender
