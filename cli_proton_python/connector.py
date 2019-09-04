@@ -205,7 +205,7 @@ def run_connectors(opts, results, errors, stats=None):
             super(proton.reactor.Container, container).global_handler.add(
                 coreclient.ErrorsHandler(opts.conn_reconnect))
             container.run()
-        except coreclient.ClientException as exc:
+        except (coreclient.ClientException, Exception) as exc:
             simple_connector.result['connection']['error'] = 1
             errors.append(str(exc))
     finally:
