@@ -30,6 +30,7 @@ import unittest
 import random
 import time
 import sys
+import os
 import proton
 
 from cli_proton_python import sender, receiver, connector
@@ -778,9 +779,13 @@ class CommandLineTests(CommandLineTestCase):
     
     def test_read_config_file_send_receive_cli(self):
         """ basic send receive test with connection configuration file """
+        f = open("connect.json", "w")
+        f.write('{"scheme": "amqp"}')
+        f.close()
         sent_messages = self.run_sender(['--log-msgs', 'dict', '--conn-use-config-file'])
         recv_messages = self.run_receiver(['--log-msgs', 'dict', '--conn-use-config-file'])
         self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
+        os.remove("connect.json")
 
     def test_conn_urls_send_receive_cli(self):
         """ basic send receive test with connection urls """
