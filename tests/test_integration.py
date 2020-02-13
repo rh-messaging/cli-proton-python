@@ -418,6 +418,12 @@ class ReactorOptionsTests(SenderReceiverTestCase):
 class ConnectionOptionsTests(SenderReceiverTestCase):
     """ connection options test group """
 
+    def setUp(self):
+        """ create connect.json """
+        f = open("connect.json", "w")
+        f.write('{"scheme": "amqp"}')
+        f.close()
+
     def test_auth_mechs_anonymous(self):
         """ tests allowed authentication mechanisms: anonymous """
         send_opts = self.get_sender_opts()
@@ -437,6 +443,10 @@ class ConnectionOptionsTests(SenderReceiverTestCase):
         sent_messages = self.run_sender(send_opts)
         recv_messages = self.run_receiver(recv_opts)
         self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
+
+    def tearDown(self):
+        """ delete connect.json """
+        os.remove("connect.json")
 
 @unittest.skip("test class not implemented yet")
 class LinkOptionsTests(SenderReceiverTestCase):
@@ -762,6 +772,12 @@ class ConnectorTests(ConnectorTestCase):
 class CommandLineTests(CommandLineTestCase):
     """ command line test group """
 
+    def setUp(self):
+        """ create connect.json """
+        f = open("connect.json", "w")
+        f.write('{"scheme": "amqp"}')
+        f.close()
+
     def test_send_receive(self):
         """ basic send receive test """
         sent_messages = self.run_sender(['--log-msgs', 'dict'])
@@ -779,13 +795,9 @@ class CommandLineTests(CommandLineTestCase):
     
     def test_read_config_file_send_receive_cli(self):
         """ basic send receive test with connection configuration file """
-        f = open("connect.json", "w")
-        f.write('{"scheme": "amqp"}')
-        f.close()
         sent_messages = self.run_sender(['--log-msgs', 'dict', '--conn-use-config-file'])
         recv_messages = self.run_receiver(['--log-msgs', 'dict', '--conn-use-config-file'])
         self.assertTrue(len(sent_messages) == len(recv_messages) == 1)
-        os.remove("connect.json")
 
     def test_conn_urls_send_receive_cli(self):
         """ basic send receive test with connection urls """
@@ -849,6 +861,9 @@ class CommandLineTests(CommandLineTestCase):
         self.assertEqual(received_msgs, TOTAL_MSGS)
         self.assertEqual(released_msgs, RECV_COUNT)
 
+    def tearDown(self):
+        """ delete connect.json """
+        os.remove("connect.json")
 
 # Peer-to-peer tests
 
