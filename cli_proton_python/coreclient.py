@@ -123,10 +123,8 @@ class CoreClient(proton.handlers.MessagingHandler):
         :param event: reactor event
         :type event: proton.Event
         """
-        if not self.opts.conn_ssl_trust_store:
-            raise ValueError('trust store path needs to be given: %s'
-                             % self.opts.conn_ssl_trust_store)
-        event.container.ssl.client.set_trusted_ca_db(self.opts.conn_ssl_trust_store)
+        if self.opts.conn_ssl_trust_store:
+            event.container.ssl.client.set_trusted_ca_db(self.opts.conn_ssl_trust_store)
         if self.opts.conn_ssl_verify_peer_name:
             event.container.ssl.client.set_peer_authentication(proton.SSLDomain.VERIFY_PEER_NAME)
         elif self.opts.conn_ssl_verify_peer:
