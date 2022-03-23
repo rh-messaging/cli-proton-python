@@ -1,6 +1,10 @@
+arch:
+  - arm64
+  - ppc64le
+  - s390x
+os: linux
 language: python
 python:
-    - "2.7"
     - "3.6"
 
 install:
@@ -16,9 +20,10 @@ before_install:
   - cp ${PWD}/tests/.qdrouterd.conf ${PWD}/qpid-dispatch/qdrouterd.conf
   - docker pull vromero/activemq-artemis
   - docker pull rhmessagingqe/qpid-dispatch:ubuntu1804
-  - docker run -v ${PWD}/artemis-data/override:/var/lib/artemis/etc-override -p 5672:5672 -d vromero/activemq-artemis
-  - docker run -v ${PWD}/qpid-dispatch:/var/lib/qdrouterd -p 5673:5673 -d rhmessagingqe/qpid-dispatch:ubuntu1804
+  - docker run -v ${PWD}/artemis-data/override:/var/lib/artemis/etc-override:Z -p 5672:5672 -d vromero/activemq-artemis:2-latest
+  - docker run -v ${PWD}/qpid-dispatch:/var/lib/qdrouterd:Z -p 5673:5673 -d rhmessagingqe/qpid-dispatch:ubuntu1804
   - docker ps -a
 
 script:
-  - cd tests;python test_integration.py
+  - python -m pip install pytest pytest-timeout
+  - cd tests; python -m pytest --timeout=10 -v -s test_integration.py
