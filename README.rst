@@ -2,9 +2,6 @@
 CLI-PROTON-PYTHON
 #################
 
-.. image:: https://travis-ci.org/rh-messaging/cli-proton-python.svg?branch=master
-    :target: https://travis-ci.org/rh-messaging/cli-proton-python
-
 .. image:: https://badge.fury.io/py/cli-proton-python.svg
     :target: https://badge.fury.io/py/cli-proton-python
 
@@ -12,16 +9,16 @@ Proton Python clients is a collection of reactive messaging test clients built o
 
 current related projects:
 
+* cli-cpp_
 * cli-java_
 * cli-rhea_
-* cli-netlite_
-* cli-proton-ruby_
+* cli-proton-dotnet_
 
 ************
 Installation
 ************
 
-cli-proton-python requires Python_ v2.6+ to run.
+cli-proton-python requires Python_ v3.8+ to run.
 
 ::
 
@@ -76,9 +73,9 @@ License
 
 .. _Python: https://python.org/
 .. _python-qpid-proton: https://pypi.python.org/pypi/python-qpid-proton
+.. _cli-cpp: https://github.com/rh-messaging/cli-cpp
 .. _cli-java: https://github.com/rh-messaging/cli-java
 .. _cli-rhea: https://github.com/rh-messaging/cli-rhea
-.. _cli-netlite: https://github.com/rh-messaging/cli-netlite
-.. _cli-proton-ruby: https://github.com/rh-messaging/cli-proton-ruby
+.. _cli-proton-dotnet: https://github.com/rh-messaging/cli-proton-dotnet
 .. _read the docummentation: http://cli-proton-python.readthedocs.io/en/latest/
 
