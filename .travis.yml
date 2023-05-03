@@ -25,5 +25,4 @@ before_install:
   - docker ps -a
 
 script:
-  - python -m pip install pytest pytest-timeout
-  - cd tests; python -m pytest --timeout=10 -v -s test_integration.py
+  - cd tests; python test_integration.py
