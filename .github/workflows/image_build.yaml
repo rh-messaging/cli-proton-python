@@ -1,0 +1,55 @@
+name: Build and Push Image
+on:
+  push:
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+    branches: [ main ]
+
+env:
+  IMAGE_NAME: cli-proton-dotnet
+  IMAGE_REGISTRY: quay.io
+  IMAGE_NAMESPACE: rhmessagingqe
+
+jobs:
+  build:
+    name: Build and push image
+    runs-on: ubuntu-22.04
+
+    steps:
+      - uses: actions/checkout@v3
+
+      # https://www.integralist.co.uk/posts/github-actions/
+      - name: Prepare ref name
+        id: cleaned_ref_name
+        run: |
+          ref_name=$(echo ${{ github.ref_name }} | perl -pe 's/[^a-zA-Z0-9]+/-/g' | perl -pe 's/(\A-|-\Z)//g' | awk '{print tolower($0)}')
+          echo "ref_name=${ref_name}" >> $GITHUB_OUTPUT
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+
+      - name: Build Image
+        id: build-image
+        uses: redhat-actions/buildah-build@v2
+        with:
+          image: ${{ env.IMAGE_NAME }}
+          tags: latest ${{ github.sha }} ${{ steps.cleaned_ref_name.outputs.ref_name }}
+          archs: amd64, arm64, ppc64le, s390x
+          containerfiles: |
+            ./Dockerfile
+
+      - name: Push To quay.io
+        if: github.ref == 'refs/heads/main'
+        id: push-to-quay
+        uses: redhat-actions/push-to-registry@v2
+        with:
+          image: ${{ steps.build-image.outputs.image }}
+          tags: ${{ steps.build-image.outputs.tags }}
+          registry: ${{ env.IMAGE_REGISTRY }}/${{ env.IMAGE_NAMESPACE }}
+          username: ${{ secrets.QUAY_USER }}
+          password: ${{ secrets.QUAY_TOKEN }}
+
+      - name: Print image URL
+        if: steps.push-to-quay.outcome == 'success'
+        run: echo "Images pushed to ${{ steps.push-to-quay.outputs.registry-paths }}"
