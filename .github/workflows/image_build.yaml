@@ -7,7 +7,7 @@ on:
     branches: [ main ]
 
 env:
-  IMAGE_NAME: cli-proton-dotnet
+  IMAGE_NAME: cli-proton-python
   IMAGE_REGISTRY: quay.io
   IMAGE_NAMESPACE: rhmessagingqe
 
