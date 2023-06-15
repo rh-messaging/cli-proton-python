@@ -216,7 +216,7 @@ class Recv(coreclient.CoreClient):
         :type event: proton.Event
         """
         if self.opts.process_reply_to and event.connection.remote_offered_capabilities and \
-                'ANONYMOUS-RELAY' in event.connection.remote_offered_capabilities.elements:
+                'ANONYMOUS-RELAY' in event.connection.remote_offered_capabilities:
             self.relay = event.reactor.create_sender(event.connection, None)
 
     def on_link_opened(self, event):
